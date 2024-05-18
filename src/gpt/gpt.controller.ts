@@ -65,6 +65,11 @@ export class GptController {
     return await this.gptService.translate(translateDto);
   }
 
+  @Post('translate-cohere')
+  async translateCohere(@Body() translateDto: TranslateDto) {
+    return await this.gptService.translateCohere(translateDto);
+  }
+
   @Post('text-to-audio')
   async textToAudio(@Body() textToAudio: TextToAudioDto, @Res() res: Response) {
     const filePath = await this.gptService.textToAudio(textToAudio);

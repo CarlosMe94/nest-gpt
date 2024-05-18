@@ -21,11 +21,17 @@ import {
 } from './dtos';
 import OpenAI from 'openai';
 import { prosConsDicusserUseCase } from './use-cases/proConsDiscusser.use-case';
+import { CohereClient } from 'cohere-ai';
+import { translateUseCaseCohere } from './use-cases/translate-cohere.use-case';
 
 @Injectable()
 export class GptService {
   private openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
+  });
+
+  private cohere = new CohereClient({
+    token: 'AVFAU97iyyrqhroATDCMx2oVPBdJUf39lCYbYWki',
   });
   // Llamar casos de uso
   async ortographyCheck(orthographyDto: OrthographyDto) {
@@ -90,5 +96,9 @@ export class GptService {
 
   async imageVariation({ baseImage }: ImageVariationDto) {
     return await imageVariationUseCase(this.openai, { baseImage });
+  }
+
+  async translateCohere({ prompt, lang }: TranslateDto) {
+    return await translateUseCaseCohere(this.cohere, { prompt, lang });
   }
 }
